@@ -67,15 +67,20 @@ public class Main {
 
         }
 
-
-
-        User user = new SimpleJDBCRepository().findUserById(10L);
+        User user = new User();
+        user.setId(10L);
+        user.setFirstName("James");
+        user.setLastName("Bond");
+        user.setAge(20);
+        long val = new SimpleJDBCRepository().createUser(user);
+        System.out.println("Result of user creation: " + val);
+        user = new SimpleJDBCRepository().findUserById(10L);
 
         user.setFirstName("Will");
         user.setLastName("Smith");
         user.setAge(25);
 
-        new SimpleJDBCRepository(user).updateUser();
+        new SimpleJDBCRepository().updateUser(user);
 
         user = new SimpleJDBCRepository().findUserById(10L);
         System.out.println(user.getId());

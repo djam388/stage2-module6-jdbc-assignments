@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SimpleJDBCRepository {
-    private User user = null;
+//    private User user = null;
     private Connection connection = null;
     private PreparedStatement ps = null;
     private Statement st = null;
@@ -28,17 +28,17 @@ public class SimpleJDBCRepository {
     private static final String findUserByNameSQL = "SELECT * FROM myusers WHERE firstname = ?";
     private static final String findAllUserSQL = "SELECT * FROM myusers";
 
-    public SimpleJDBCRepository(User user) {
-        this.user = user;
-    }
+//    public SimpleJDBCRepository(User user) {
+//        this.user = user;
+//    }
 
-    public Long createUser() throws SQLException {
+    public Long createUser(User user) throws SQLException {
         connection = CustomDataSource.getInstance().getConnection();
         ps = connection.prepareStatement(createUserSQL);
-        ps.setLong(1, getUser().getId());
-        ps.setString(2, getUser().getFirstName());
-        ps.setString(3, getUser().getLastName());
-        ps.setInt(4, getUser().getAge());
+        ps.setLong(1, user.getId());
+        ps.setString(2, user.getFirstName());
+        ps.setString(3, user.getLastName());
+        ps.setInt(4, user.getAge());
         long val = ps.executeUpdate();
         connection.close();
         return val;
@@ -94,17 +94,17 @@ public class SimpleJDBCRepository {
         return userList;
     }
 
-    public User updateUser() throws SQLException, NullPointerException  {
+    public User updateUser(User user) throws SQLException, NullPointerException  {
         connection = CustomDataSource.getInstance().getConnection();
         ps = connection.prepareStatement(updateUserSQL);
-        ps.setString(1, getUser().getFirstName());
-        ps.setString(2, getUser().getLastName());
-        ps.setInt(3, getUser().getAge());
-        ps.setLong(4, getUser().getId());
+        ps.setString(1, user.getFirstName());
+        ps.setString(2, user.getLastName());
+        ps.setInt(3, user.getAge());
+        ps.setLong(4, user.getId());
         ps.executeUpdate();
-        User user = findUserById(getUser().getId());
+        User changedUser = findUserById(user.getId());
         connection.close();
-        return user;
+        return changedUser;
     }
 
     public void deleteUser(Long userId) throws SQLException  {
