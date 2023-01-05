@@ -32,7 +32,7 @@ public class SimpleJDBCRepository {
 //        this.user = user;
 //    }
 
-    public Long createUser(User user) throws SQLException {
+    public Long createUser(User user) throws NamingException, SQLException {
         connection = CustomDataSource.getInstance().getConnection();
         ps = connection.prepareStatement(createUserSQL);
         ps.setLong(1, user.getId());
@@ -45,7 +45,7 @@ public class SimpleJDBCRepository {
 
     }
 
-    public User findUserById(Long userId) throws SQLException {
+    public User findUserById(Long userId) throws NamingException, SQLException {
         connection = CustomDataSource.getInstance().getConnection();
         ps = connection.prepareStatement(findUserByIdSQL);
         ps.setLong(1, userId);
@@ -94,7 +94,7 @@ public class SimpleJDBCRepository {
         return userList;
     }
 
-    public User updateUser(User user) throws SQLException, NullPointerException  {
+    public User updateUser(User user) throws NamingException, SQLException, NullPointerException  {
         connection = CustomDataSource.getInstance().getConnection();
         ps = connection.prepareStatement(updateUserSQL);
         ps.setString(1, user.getFirstName());
@@ -107,7 +107,7 @@ public class SimpleJDBCRepository {
         return changedUser;
     }
 
-    public void deleteUser(Long userId) throws SQLException  {
+    public void deleteUser(Long userId) throws NamingException, SQLException  {
         connection = CustomDataSource.getInstance().getConnection();
         ps = connection.prepareStatement(deleteUser);
         ps.setLong(1, userId);
