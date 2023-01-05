@@ -1,5 +1,6 @@
 package jdbc;
 
+import javax.naming.NamingException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -9,16 +10,14 @@ public class ReadAppProperties {
     public ReadAppProperties() {
     }
 
-    public Properties getProperties() {
-        try (InputStream input = ReadAppProperties.class.getClassLoader().getResourceAsStream("app.properties")) {
+    public Properties getProperties() throws IOException, NamingException {
+        InputStream input = ReadAppProperties.class.getClassLoader().getResourceAsStream("app.properties");
 
             if (input == null) {
                 return null;
             }
             properties.load(input);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+
 
             return properties;
     }

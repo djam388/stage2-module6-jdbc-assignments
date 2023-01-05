@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.naming.NamingException;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ public class SimpleJDBCRepository {
 //        this.user = user;
 //    }
 
-    public Long createUser(User user) throws NamingException, SQLException {
+    public Long createUser(User user) throws NamingException, SQLException, IOException {
         connection = CustomDataSource.getInstance().getConnection();
         ps = connection.prepareStatement(createUserSQL);
         ps.setLong(1, user.getId());
@@ -45,7 +46,7 @@ public class SimpleJDBCRepository {
 
     }
 
-    public User findUserById(Long userId) throws NamingException, SQLException {
+    public User findUserById(Long userId) throws NamingException, SQLException, IOException {
         connection = CustomDataSource.getInstance().getConnection();
         ps = connection.prepareStatement(findUserByIdSQL);
         ps.setLong(1, userId);
@@ -61,7 +62,7 @@ public class SimpleJDBCRepository {
         return user;
     }
 
-    public User findUserByName(String userName) throws NamingException, SQLException {
+    public User findUserByName(String userName) throws NamingException, SQLException, IOException {
         connection = CustomDataSource.getInstance().getConnection();
         ps = connection.prepareStatement(findUserByNameSQL);
         ps.setString(1, userName);
@@ -77,7 +78,7 @@ public class SimpleJDBCRepository {
         return user;
     }
 
-    public List<User> findAllUser() throws NamingException, SQLException  {
+    public List<User> findAllUser() throws NamingException, SQLException, IOException {
         List<User> userList = new ArrayList<>();
         connection = CustomDataSource.getInstance().getConnection();
         st = connection.createStatement();
@@ -94,7 +95,7 @@ public class SimpleJDBCRepository {
         return userList;
     }
 
-    public User updateUser(User user) throws NamingException, SQLException, NullPointerException  {
+    public User updateUser(User user) throws NamingException, SQLException, NullPointerException, IOException {
         connection = CustomDataSource.getInstance().getConnection();
         ps = connection.prepareStatement(updateUserSQL);
         ps.setString(1, user.getFirstName());
@@ -107,7 +108,7 @@ public class SimpleJDBCRepository {
         return changedUser;
     }
 
-    public void deleteUser(Long userId) throws NamingException, SQLException  {
+    public void deleteUser(Long userId) throws NamingException, SQLException, IOException {
         connection = CustomDataSource.getInstance().getConnection();
         ps = connection.prepareStatement(deleteUser);
         ps.setLong(1, userId);

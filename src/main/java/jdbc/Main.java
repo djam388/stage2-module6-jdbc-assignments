@@ -5,13 +5,14 @@ import org.postgresql.ds.PGPoolingDataSource;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+import java.io.IOException;
 import java.sql.*;
 import java.util.List;
 import java.util.Properties;
 
 public class Main {
 
-    public static void main(String[] args) throws NamingException, SQLException {
+    public static void main(String[] args) throws NamingException, SQLException, IOException {
         Properties properties = new ReadAppProperties().getProperties();
 
 

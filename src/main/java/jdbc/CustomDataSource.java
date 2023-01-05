@@ -1,10 +1,12 @@
 package jdbc;
 
+import javax.naming.NamingException;
 import javax.sql.DataSource;
 import lombok.Getter;
 import lombok.Setter;
 
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -16,7 +18,7 @@ import java.util.logging.Logger;
 @Getter
 @Setter
 
-//@PropertySource("classpath:application.properties")
+
 public class CustomDataSource implements DataSource {
     private static volatile CustomDataSource instance;
     private final String driver;
@@ -26,7 +28,7 @@ public class CustomDataSource implements DataSource {
 
     private Properties properties = new ReadAppProperties().getProperties();
 
-    private CustomDataSource(String driver, String url, String password, String name) {
+    private CustomDataSource(String driver, String url, String password, String name) throws NamingException, IOException {
         this.driver = driver;
         this.url = url;
         this.password = password;
@@ -34,7 +36,7 @@ public class CustomDataSource implements DataSource {
 
     }
 
-    private CustomDataSource() {
+    private CustomDataSource() throws NamingException, IOException {
         this.driver = properties.getProperty("postgres.driver");
         this.url = properties.getProperty("postgres.url");
         this.password = properties.getProperty("postgres.password");
@@ -52,14 +54,14 @@ public class CustomDataSource implements DataSource {
         return connection;
     }
 
-    public static CustomDataSource getInstance() {
+    public static CustomDataSource getInstance() throws NamingException, IOException {
         if (instance == null)
             instance = new CustomDataSource();
 
         return instance;
     }
 
-    public static CustomDataSource getInstance(String driver, String url, String password, String name) {
+    public static CustomDataSource getInstance(String driver, String url, String password, String name) throws NamingException, IOException {
         if (instance == null)
             instance = new CustomDataSource(driver, url, password, name);
 
