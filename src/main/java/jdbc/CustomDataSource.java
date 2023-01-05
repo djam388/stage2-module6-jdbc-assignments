@@ -45,12 +45,22 @@ public class CustomDataSource implements DataSource {
     }
     public Connection getConnection() throws SQLException {
         String url = getUrl() + "?user=" + getName() + "&password=" + getPassword();
-        Connection connection = new CustomConnector().getConnection(url);
+        Connection connection = null;
+        try {
+            connection = new CustomConnector().getConnection(url);
+        } catch (NamingException e) {
+            throw new RuntimeException(e);
+        }
         return connection;
     }
     @Override
     public Connection getConnection(String username, String password) throws SQLException {
-        Connection connection = new CustomConnector().getConnection(getUrl(), username, password);
+        Connection connection = null;
+        try {
+            connection = new CustomConnector().getConnection(getUrl(), username, password);
+        } catch (NamingException e) {
+            throw new RuntimeException(e);
+        }
         return connection;
     }
 
