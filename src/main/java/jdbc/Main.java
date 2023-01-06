@@ -54,7 +54,7 @@ public class Main {
 //
 //        newUser.setId(30L);
 //        newUser.setFirstName("Elon");
-//        newUser.setLastName("Mask");
+//        newUser.setLastName("Musk");
 //        newUser.setAge(40);
 //
 //        new SimpleJDBCRepository(newUser).createUser();
