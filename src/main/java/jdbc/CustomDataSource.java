@@ -1,16 +1,11 @@
 package jdbc;
 
-import javax.naming.NamingException;
 import javax.sql.DataSource;
 import lombok.Getter;
 import lombok.Setter;
 
-
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.SQLFeatureNotSupportedException;
 import java.util.Properties;
 import java.util.logging.Logger;
 

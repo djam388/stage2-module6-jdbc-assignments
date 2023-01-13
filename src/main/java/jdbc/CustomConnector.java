@@ -1,6 +1,6 @@
 package jdbc;
 
-import javax.naming.NamingException;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -10,8 +10,9 @@ public class CustomConnector {
         Connection conn;
 
         try {
+            Class.forName(CustomDataSource.getInstance().getDriver());
             conn = DriverManager.getConnection(url);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
         System.out.println("Connected to the PostgreSQL server successfully.");
@@ -23,8 +24,10 @@ public class CustomConnector {
         Connection conn;
 
         try {
+
+            Class.forName(CustomDataSource.getInstance().getDriver());
             conn = DriverManager.getConnection(url, user, password);
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
         System.out.println("Connected to the PostgreSQL server successfully.");
