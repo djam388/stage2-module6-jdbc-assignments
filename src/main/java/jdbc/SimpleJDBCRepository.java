@@ -33,16 +33,21 @@ public class SimpleJDBCRepository {
 //        this.user = user;
 //    }
 
-    public Long createUser(User user) throws NamingException, SQLException, IOException {
+    public Long createUser(User user){
         connection = CustomDataSource.getInstance().getConnection();
-        ps = connection.prepareStatement(createUserSQL);
-        ps.setLong(1, user.getId());
-        ps.setString(2, user.getFirstName());
-        ps.setString(3, user.getLastName());
-        ps.setInt(4, user.getAge());
-        long val = ps.executeUpdate();
-        connection.close();
-        return val;
+        try {
+            ps = connection.prepareStatement(createUserSQL);
+            ps.setLong(1, user.getId());
+            ps.setString(2, user.getFirstName());
+            ps.setString(3, user.getLastName());
+            ps.setInt(4, user.getAge());
+            long val = ps.executeUpdate();
+            connection.close();
+            return val;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
 
     }
 
@@ -62,57 +67,77 @@ public class SimpleJDBCRepository {
         return user;
     }
 
-    public User findUserByName(String userName) throws NamingException, SQLException, IOException {
+    public User findUserByName(String userName) {
         connection = CustomDataSource.getInstance().getConnection();
-        ps = connection.prepareStatement(findUserByNameSQL);
-        ps.setString(1, userName);
-        ResultSet rs = ps.executeQuery();
-        User user = new User();
-        while (rs.next()) {
-            user.setId(rs.getLong("id"));
-            user.setAge(rs.getInt("age"));
-            user.setFirstName(rs.getString("firstname") );
-            user.setLastName(rs.getString("lastname"));
+        try {
+            ps = connection.prepareStatement(findUserByNameSQL);
+            ps.setString(1, userName);
+            ResultSet rs = ps.executeQuery();
+            User user = new User();
+            while (rs.next()) {
+                user.setId(rs.getLong("id"));
+                user.setAge(rs.getInt("age"));
+                user.setFirstName(rs.getString("firstname") );
+                user.setLastName(rs.getString("lastname"));
+            }
+            connection.close();
+            return user;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        connection.close();
-        return user;
+
     }
 
-    public List<User> findAllUser() throws NamingException, SQLException, IOException {
+    public List<User> findAllUser() {
         List<User> userList = new ArrayList<>();
         connection = CustomDataSource.getInstance().getConnection();
-        st = connection.createStatement();
-        ResultSet rs = st.executeQuery(findAllUserSQL);
-        while (rs.next()) {
-            User user = new User();
-            user.setId(rs.getLong("id"));
-            user.setAge(rs.getInt("age"));
-            user.setFirstName(rs.getString("firstname") );
-            user.setLastName(rs.getString("lastname"));
-            userList.add(user);
+        try {
+            st = connection.createStatement();
+            ResultSet rs = st.executeQuery(findAllUserSQL);
+            while (rs.next()) {
+                User user = new User();
+                user.setId(rs.getLong("id"));
+                user.setAge(rs.getInt("age"));
+                user.setFirstName(rs.getString("firstname") );
+                user.setLastName(rs.getString("lastname"));
+                userList.add(user);
+            }
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        connection.close();
         return userList;
     }
 
-    public User updateUser(User user) throws NamingException, SQLException, NullPointerException, IOException {
+    public User updateUser(User user) {
         connection = CustomDataSource.getInstance().getConnection();
-        ps = connection.prepareStatement(updateUserSQL);
-        ps.setString(1, user.getFirstName());
-        ps.setString(2, user.getLastName());
-        ps.setInt(3, user.getAge());
-        ps.setLong(4, user.getId());
-        ps.executeUpdate();
-        User changedUser = findUserById(user.getId());
-        connection.close();
-        return changedUser;
+        try {
+            ps = connection.prepareStatement(updateUserSQL);
+            ps.setString(1, user.getFirstName());
+            ps.setString(2, user.getLastName());
+            ps.setInt(3, user.getAge());
+            ps.setLong(4, user.getId());
+            ps.executeUpdate();
+            User changedUser = findUserById(user.getId());
+            connection.close();
+            return changedUser;
+        } catch (SQLException | NamingException | IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
     }
 
-    public void deleteUser(Long userId) throws NamingException, SQLException, IOException {
+    public void deleteUser(Long userId) {
         connection = CustomDataSource.getInstance().getConnection();
-        ps = connection.prepareStatement(deleteUser);
-        ps.setLong(1, userId);
-        ps.executeUpdate();
-        connection.close();
+        try {
+            ps = connection.prepareStatement(deleteUser);
+            ps.setLong(1, userId);
+            ps.executeUpdate();
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

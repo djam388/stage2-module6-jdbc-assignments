@@ -26,9 +26,13 @@ public class CustomDataSource implements DataSource {
     private final String name;
     private final String password;
 
-    private Properties properties = new ReadAppProperties().getProperties();
+    private Properties properties;
 
-    private CustomDataSource(String driver, String url, String password, String name) throws NamingException, IOException {
+    {
+        properties = new ReadAppProperties().getProperties();
+    }
+
+    private CustomDataSource(String driver, String url, String password, String name) {
         this.driver = driver;
         this.url = url;
         this.password = password;
@@ -36,42 +40,32 @@ public class CustomDataSource implements DataSource {
 
     }
 
-    private CustomDataSource() throws NamingException, IOException {
+    private CustomDataSource() {
         this.driver = properties.getProperty("postgres.driver");
         this.url = properties.getProperty("postgres.url");
         this.password = properties.getProperty("postgres.password");
         this.name = properties.getProperty("postgres.name");
 
     }
-    public Connection getConnection() throws SQLException {
+    public Connection getConnection() {
         String url = getUrl() + "?user=" + getName() + "&password=" + getPassword();
-        Connection connection = null;
-        try {
-            connection = new CustomConnector().getConnection(url);
-        } catch (NamingException e) {
-            throw new RuntimeException(e);
-        }
+        Connection connection = new CustomConnector().getConnection(url);
         return connection;
     }
     @Override
-    public Connection getConnection(String username, String password) throws SQLException {
-        Connection connection = null;
-        try {
-            connection = new CustomConnector().getConnection(getUrl(), username, password);
-        } catch (NamingException e) {
-            throw new RuntimeException(e);
-        }
+    public Connection getConnection(String username, String password) {
+        Connection connection = new CustomConnector().getConnection(getUrl(), username, password);
         return connection;
     }
 
-    public static CustomDataSource getInstance() throws NamingException, IOException {
+    public static CustomDataSource getInstance() {
         if (instance == null)
             instance = new CustomDataSource();
 
         return instance;
     }
 
-    public static CustomDataSource getInstance(String driver, String url, String password, String name) throws NamingException, IOException {
+    public static CustomDataSource getInstance(String driver, String url, String password, String name) {
         if (instance == null)
             instance = new CustomDataSource(driver, url, password, name);
 
@@ -79,37 +73,37 @@ public class CustomDataSource implements DataSource {
     }
 
     @Override
-    public PrintWriter getLogWriter() throws SQLException {
+    public PrintWriter getLogWriter() {
         return null;
     }
 
     @Override
-    public void setLogWriter(PrintWriter out) throws SQLException {
+    public void setLogWriter(PrintWriter out) {
 
     }
 
     @Override
-    public void setLoginTimeout(int seconds) throws SQLException {
+    public void setLoginTimeout(int seconds) {
 
     }
 
     @Override
-    public int getLoginTimeout() throws SQLException {
+    public int getLoginTimeout() {
         return 0;
     }
 
     @Override
-    public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+    public Logger getParentLogger() {
         return null;
     }
 
     @Override
-    public <T> T unwrap(Class<T> iface) throws SQLException {
+    public <T> T unwrap(Class<T> iface) {
         return null;
     }
 
     @Override
-    public boolean isWrapperFor(Class<?> iface) throws SQLException {
+    public boolean isWrapperFor(Class<?> iface) {
         return false;
     }
 }

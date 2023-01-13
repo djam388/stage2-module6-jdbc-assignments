@@ -1,10 +1,7 @@
 package jdbc;
 
-import org.postgresql.ds.PGPoolingDataSource;
 
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.*;
 import java.util.List;
@@ -54,7 +51,7 @@ public class Main {
 //
 //        newUser.setId(30L);
 //        newUser.setFirstName("Elon");
-//        newUser.setLastName("Mask");
+//        newUser.setLastName("Musk");
 //        newUser.setAge(40);
 //
 //        new SimpleJDBCRepository(newUser).createUser();

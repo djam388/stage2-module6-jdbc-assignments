@@ -9,15 +9,19 @@ public class ReadAppProperties {
     public ReadAppProperties() {
     }
 
-    public Properties getProperties() throws IOException {
+    public Properties getProperties() {
         InputStream input = ReadAppProperties.class.getClassLoader().getResourceAsStream("app.properties");
 
             if (input == null) {
                 return null;
             }
+        try {
             properties.load(input);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
 
-            return properties;
+        return properties;
     }
 }
