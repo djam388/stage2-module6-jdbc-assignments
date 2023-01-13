@@ -11,7 +11,6 @@ public class ReadAppProperties {
 
     public Properties getProperties() {
         InputStream input = ReadAppProperties.class.getClassLoader().getResourceAsStream("app.properties");
-
             if (input == null) {
                 return null;
             }
@@ -20,8 +19,6 @@ public class ReadAppProperties {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-
         return properties;
     }
 }

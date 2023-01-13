@@ -124,8 +124,6 @@ public class SimpleJDBCRepository {
         } catch (SQLException | NamingException | IOException e) {
             throw new RuntimeException(e);
         }
-
-
     }
 
     public void deleteUser(Long userId) {

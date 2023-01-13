@@ -61,14 +61,12 @@ public class CustomDataSource implements DataSource {
     public static CustomDataSource getInstance() {
         if (instance == null)
             instance = new CustomDataSource();
-
         return instance;
     }
 
     public static CustomDataSource getInstance(String driver, String url, String password, String name) {
         if (instance == null)
             instance = new CustomDataSource(driver, url, password, name);
-
         return instance;
     }
 
@@ -79,12 +77,10 @@ public class CustomDataSource implements DataSource {
 
     @Override
     public void setLogWriter(PrintWriter out) {
-
     }
 
     @Override
     public void setLoginTimeout(int seconds) {
-
     }
 
     @Override

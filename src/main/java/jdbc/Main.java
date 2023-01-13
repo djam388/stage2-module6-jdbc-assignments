@@ -48,7 +48,6 @@ public class Main {
         }
 
 //        User newUser = new User();
-//
 //        newUser.setId(30L);
 //        newUser.setFirstName("Elon");
 //        newUser.setLastName("Musk");

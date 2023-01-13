@@ -16,7 +16,6 @@ public class CustomConnector {
         }
         System.out.println("Connected to the PostgreSQL server successfully.");
 
-
         return conn;
     }
 
@@ -29,7 +28,6 @@ public class CustomConnector {
             throw new RuntimeException(e);
         }
         System.out.println("Connected to the PostgreSQL server successfully.");
-
 
         return conn;
     }
