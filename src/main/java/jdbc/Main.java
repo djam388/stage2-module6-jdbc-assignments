@@ -9,7 +9,7 @@ import java.util.Properties;
 
 public class Main {
 
-    public static void main(String[] args) throws NamingException, SQLException, IOException {
+    public static void main(String[] args) {
         Properties properties = new ReadAppProperties().getProperties();
 
 
@@ -19,7 +19,11 @@ public class Main {
         System.out.println(properties.getProperty("postgres.name"));
         System.out.println(properties.getProperty("postgres.password"));
 
-        DriverManager.registerDriver(new org.postgresql.Driver());
+        try {
+            DriverManager.registerDriver(new org.postgresql.Driver());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         String dbURL = "jdbc:postgresql:myfirstdb" + "?user=" +properties.getProperty("postgres.name") + "&password=" + properties.getProperty("postgres.password");
         CustomDataSource customDataSource = CustomDataSource.getInstance();
         Connection connection = null;
@@ -43,7 +47,9 @@ public class Main {
                     System.out.println(rs.getLong("id") + " / " + rs2.getLong("id"));
                     System.out.println(rs.getString("firstname") + " / " + rs2.getString("firstname"));
                     conn.close();
-                } catch (SQLException e) {e.printStackTrace();}
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         }
 

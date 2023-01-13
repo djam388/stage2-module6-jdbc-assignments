@@ -17,7 +17,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SimpleJDBCRepository {
-//    private User user = null;
     private Connection connection = null;
     private PreparedStatement ps = null;
     private Statement st = null;
@@ -29,9 +28,6 @@ public class SimpleJDBCRepository {
     private static final String findUserByNameSQL = "SELECT * FROM myusers WHERE firstname = ?";
     private static final String findAllUserSQL = "SELECT * FROM myusers";
 
-//    public SimpleJDBCRepository(User user) {
-//        this.user = user;
-//    }
 
     public Long createUser(User user){
         connection = CustomDataSource.getInstance().getConnection();
@@ -51,20 +47,25 @@ public class SimpleJDBCRepository {
 
     }
 
-    public User findUserById(Long userId) throws NamingException, SQLException, IOException {
+    public User findUserById(Long userId){
         connection = CustomDataSource.getInstance().getConnection();
-        ps = connection.prepareStatement(findUserByIdSQL);
-        ps.setLong(1, userId);
-        ResultSet rs = ps.executeQuery();
-        User user = new User();
-        while (rs.next()) {
-            user.setId(rs.getLong("id"));
-            user.setAge(rs.getInt("age"));
-            user.setFirstName(rs.getString("firstname") );
-            user.setLastName(rs.getString("lastname"));
+        try {
+            ps = connection.prepareStatement(findUserByIdSQL);
+            ps.setLong(1, userId);
+            ResultSet rs = ps.executeQuery();
+            User user = new User();
+            while (rs.next()) {
+                user.setId(rs.getLong("id"));
+                user.setAge(rs.getInt("age"));
+                user.setFirstName(rs.getString("firstname") );
+                user.setLastName(rs.getString("lastname"));
+            }
+            connection.close();
+            return user;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        connection.close();
-        return user;
+
     }
 
     public User findUserByName(String userName) {
@@ -121,7 +122,7 @@ public class SimpleJDBCRepository {
             User changedUser = findUserById(user.getId());
             connection.close();
             return changedUser;
-        } catch (SQLException | NamingException | IOException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
