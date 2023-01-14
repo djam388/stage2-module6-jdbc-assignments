@@ -44,8 +44,6 @@ public class SimpleJDBCRepository {
         } catch (SQLException | NullPointerException e) {
             throw new RuntimeException(e);
         }
-
-
     }
 
     public User findUserById(Long userId){
