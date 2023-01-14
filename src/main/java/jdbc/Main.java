@@ -69,7 +69,7 @@ public class Main {
             System.out.println("age: " + user.getAge());
 
         }
-
+        new SimpleJDBCRepository().deleteUser(10L);
         User user = new User();
         user.setId(10L);
         user.setFirstName("James");
@@ -85,6 +85,7 @@ public class Main {
 
         new SimpleJDBCRepository().updateUser(user);
 
+
         user = new SimpleJDBCRepository().findUserById(10L);
         System.out.println(user.getId());
         System.out.println(user.getFirstName());
@@ -98,6 +99,8 @@ public class Main {
         System.out.println(user.getFirstName());
         System.out.println(user.getLastName());
         System.out.println(user.getAge());
+
+        user = new SimpleJDBCRepository().findUserById(null);
 
     }
 }

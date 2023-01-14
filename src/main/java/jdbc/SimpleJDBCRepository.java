@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.naming.NamingException;
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +28,9 @@ public class SimpleJDBCRepository {
 
 
     public Long createUser(User user){
+        if (user.getId() == null) {
+            return null;
+        }
         connection = CustomDataSource.getInstance().getConnection();
         try {
             ps = connection.prepareStatement(createUserSQL);
@@ -40,7 +41,7 @@ public class SimpleJDBCRepository {
             long val = ps.executeUpdate();
             connection.close();
             return val;
-        } catch (SQLException e) {
+        } catch (SQLException | NullPointerException e) {
             throw new RuntimeException(e);
         }
 
@@ -48,6 +49,9 @@ public class SimpleJDBCRepository {
     }
 
     public User findUserById(Long userId){
+        if (userId == null) {
+            return null;
+        }
         connection = CustomDataSource.getInstance().getConnection();
         try {
             ps = connection.prepareStatement(findUserByIdSQL);
@@ -62,13 +66,16 @@ public class SimpleJDBCRepository {
             }
             connection.close();
             return user;
-        } catch (SQLException e) {
+        } catch (SQLException | NullPointerException e) {
             throw new RuntimeException(e);
         }
 
     }
 
     public User findUserByName(String userName) {
+        if (userName == null) {
+            return null;
+        }
         connection = CustomDataSource.getInstance().getConnection();
         try {
             ps = connection.prepareStatement(findUserByNameSQL);
@@ -83,7 +90,7 @@ public class SimpleJDBCRepository {
             }
             connection.close();
             return user;
-        } catch (SQLException e) {
+        } catch (SQLException | NullPointerException e) {
             throw new RuntimeException(e);
         }
 
@@ -104,13 +111,16 @@ public class SimpleJDBCRepository {
                 userList.add(user);
             }
             connection.close();
-        } catch (SQLException e) {
+        } catch (SQLException | NullPointerException e) {
             throw new RuntimeException(e);
         }
         return userList;
     }
 
     public User updateUser(User user) {
+        if (user.getId() == null) {
+            return null;
+        }
         connection = CustomDataSource.getInstance().getConnection();
         try {
             ps = connection.prepareStatement(updateUserSQL);
@@ -122,19 +132,22 @@ public class SimpleJDBCRepository {
             User changedUser = findUserById(user.getId());
             connection.close();
             return changedUser;
-        } catch (SQLException e) {
+        } catch (SQLException | NullPointerException e) {
             throw new RuntimeException(e);
         }
     }
 
     public void deleteUser(Long userId) {
+        if (userId == null) {
+            return;
+        }
         connection = CustomDataSource.getInstance().getConnection();
         try {
             ps = connection.prepareStatement(deleteUser);
             ps.setLong(1, userId);
             ps.executeUpdate();
             connection.close();
-        } catch (SQLException e) {
+        } catch (SQLException | NullPointerException e) {
             throw new RuntimeException(e);
         }
 
