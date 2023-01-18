@@ -18,7 +18,7 @@ public class Main {
         System.out.println(properties.getProperty("postgres.url"));
         System.out.println(properties.getProperty("postgres.name"));
         System.out.println(properties.getProperty("postgres.password"));
-
+        System.out.println("Test:-------------------------------");
         try {
             DriverManager.registerDriver(new org.postgresql.Driver());
         } catch (SQLException e) {
@@ -52,6 +52,7 @@ public class Main {
                 }
             }
         }
+        System.out.println("Test finished:---------------------");
 
 //        User newUser = new User();
 //        newUser.setId(30L);
@@ -60,6 +61,7 @@ public class Main {
 //        newUser.setAge(40);
 //
 //        new SimpleJDBCRepository(newUser).createUser();
+        System.out.println("List of all users:-----------------");
 
         List<User> userList = new SimpleJDBCRepository().findAllUser();
         for (User user : userList) {
@@ -69,30 +71,56 @@ public class Main {
             System.out.println("age: " + user.getAge());
 
         }
+        System.out.println("Users count: " + userList.size());
+        System.out.println("----------------------------------");
+        System.out.println("Delete user with Id 10:-----------");
+
         new SimpleJDBCRepository().deleteUser(10L);
+//
+        System.out.println("User with Id 10 is deleted");
+
+        userList = new SimpleJDBCRepository().findAllUser();
+        System.out.println("----------------------------------");
+
+        System.out.println("Users count: " + userList.size());
+        System.out.println("Create user with Id 10:-----------");
+
+
         User user = new User();
         user.setId(10L);
         user.setFirstName("James");
         user.setLastName("Bond");
         user.setAge(20);
+        System.out.println("user id: " + user.getId()
+                + " user age: " + user.getAge()
+                + " user last name: " + user.getLastName()
+                + " user first name: " + user.getFirstName());
         long val = new SimpleJDBCRepository().createUser(user);
         System.out.println("Result of user creation: " + val);
         user = new SimpleJDBCRepository().findUserById(10L);
+
+        System.out.println("----------------------------------");
+        System.out.println("Rename user: ---------------------");
 
         user.setFirstName("Will");
         user.setLastName("Smith");
         user.setAge(25);
 
         new SimpleJDBCRepository().updateUser(user);
+        System.out.println("----------------------------------");
 
+        System.out.println("Renamed user: --------------------");
 
         user = new SimpleJDBCRepository().findUserById(10L);
+
         System.out.println(user.getId());
         System.out.println(user.getFirstName());
         System.out.println(user.getLastName());
         System.out.println(user.getAge());
+        System.out.println("----------------------------------");
 
-        new SimpleJDBCRepository().deleteUser(10L);
+//        new SimpleJDBCRepository().deleteUser(10L);
+        System.out.println("Users count: " + userList.size());
 
         user = new SimpleJDBCRepository().findUserById(10L);
         System.out.println(user.getId());

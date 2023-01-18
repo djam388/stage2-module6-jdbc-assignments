@@ -44,6 +44,7 @@ public class SimpleJDBCRepository {
         } catch (SQLException | NullPointerException e) {
             throw new RuntimeException(e);
         }
+
     }
 
     public User findUserById(Long userId){
@@ -143,7 +144,7 @@ public class SimpleJDBCRepository {
         try {
             ps = connection.prepareStatement(deleteUser);
             ps.setLong(1, userId);
-            ps.executeUpdate();
+            int row = ps.executeUpdate();
             connection.close();
         } catch (SQLException | NullPointerException e) {
             throw new RuntimeException(e);

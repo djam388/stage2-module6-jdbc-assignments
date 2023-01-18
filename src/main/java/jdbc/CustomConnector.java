@@ -15,7 +15,7 @@ public class CustomConnector {
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("Connected to the PostgreSQL server successfully.");
+//        System.out.println("Connected to the PostgreSQL server successfully.");
 
         return conn;
     }
@@ -30,7 +30,7 @@ public class CustomConnector {
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("Connected to the PostgreSQL server successfully.");
+//        System.out.println("Connected to the PostgreSQL server successfully.");
 
         return conn;
     }

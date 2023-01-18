@@ -20,6 +20,7 @@ public class CustomDataSource implements DataSource {
     private final String url;
     private final String name;
     private final String password;
+    private static final Object object = new Object();
 
     private Properties properties;
 
@@ -54,9 +55,18 @@ public class CustomDataSource implements DataSource {
     }
 
     public static CustomDataSource getInstance() {
-        if (instance == null)
-            instance = new CustomDataSource();
-        return instance;
+
+        if (instance != null) {
+            return instance;
+        }
+
+        synchronized (object) {
+            if (instance == null) {
+                instance = new CustomDataSource();
+            }
+
+            return instance;
+        }
     }
 
     public static CustomDataSource getInstance(String driver, String url, String password, String name) {
