@@ -67,6 +67,7 @@ public class Main {
         System.out.println("Users count in DB: " + users.size());
 
         User user = new User();
+        user.setId(10L);
         user.setFirstName("Elon");
         user.setLastName("Musk");
         user.setAge(35);
@@ -102,7 +103,7 @@ public class Main {
 
         System.out.println("ID: " + user.getId() + " Name: " + user.getFirstName() );
 
-        simpleJDBCRepository.deleteUser(4L);
+        simpleJDBCRepository.deleteUser(5L);
 
 
 
