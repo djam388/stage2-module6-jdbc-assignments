@@ -18,41 +18,41 @@ public class Main {
         System.out.println(properties.getProperty("postgres.url"));
         System.out.println(properties.getProperty("postgres.name"));
         System.out.println(properties.getProperty("postgres.password"));
-        System.out.println("Test:-------------------------------");
-        try {
-            DriverManager.registerDriver(new org.postgresql.Driver());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        String dbURL = "jdbc:postgresql:myfirstdb" + "?user=" +properties.getProperty("postgres.name") + "&password=" + properties.getProperty("postgres.password");
-        CustomDataSource customDataSource = CustomDataSource.getInstance();
-        Connection connection = null;
-
-        Connection conn = null;
-        try {
-            connection = customDataSource.getConnection();
-            conn = DriverManager.getConnection(dbURL);
-            // use connection
-        } catch (SQLException e) {
-            // log error
-        } finally {
-            if (conn != null) {
-                try {
-                    PreparedStatement ps = conn.prepareStatement("SELECT * FROM myusers");
-                    PreparedStatement ps2 = connection.prepareStatement("SELECT * FROM myusers");
-                    ResultSet rs = ps.executeQuery();
-                    ResultSet rs2 = ps2.executeQuery();
-                    rs.next();
-                    rs2.next();
-                    System.out.println(rs.getLong("id") + " / " + rs2.getLong("id"));
-                    System.out.println(rs.getString("firstname") + " / " + rs2.getString("firstname"));
-                    conn.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        System.out.println("Test finished:---------------------");
+//        System.out.println("Test:-------------------------------");
+//        try {
+//            DriverManager.registerDriver(new org.postgresql.Driver());
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//        String dbURL = "jdbc:postgresql:myfirstdb" + "?user=" +properties.getProperty("postgres.name") + "&password=" + properties.getProperty("postgres.password");
+//        CustomDataSource customDataSource = CustomDataSource.getInstance();
+//        Connection connection = null;
+//
+//        Connection conn = null;
+//        try {
+//            connection = customDataSource.getConnection();
+//            conn = DriverManager.getConnection(dbURL);
+//            // use connection
+//        } catch (SQLException e) {
+//            // log error
+//        } finally {
+//            if (conn != null) {
+//                try {
+//                    PreparedStatement ps = conn.prepareStatement("SELECT * FROM myusers");
+//                    PreparedStatement ps2 = connection.prepareStatement("SELECT * FROM myusers");
+//                    ResultSet rs = ps.executeQuery();
+//                    ResultSet rs2 = ps2.executeQuery();
+//                    rs.next();
+//                    rs2.next();
+//                    System.out.println(rs.getLong("id") + " / " + rs2.getLong("id"));
+//                    System.out.println(rs.getString("firstname") + " / " + rs2.getString("firstname"));
+//                    conn.close();
+//                } catch (SQLException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//        System.out.println("Test finished:---------------------");
         SimpleJDBCRepository simpleJDBCRepository = new SimpleJDBCRepository();
 
 
@@ -60,35 +60,68 @@ public class Main {
 
         System.out.println("Users count in DB: " + users.size());
 
-        simpleJDBCRepository.deleteUser(10L);
+//        simpleJDBCRepository.deleteUser(10L);
 
         users = simpleJDBCRepository.findAllUser();
 
         System.out.println("Users count in DB: " + users.size());
 
-        User user = users.get(0);
+        User user = new User();
+        user.setFirstName("Elon");
+        user.setLastName("Musk");
+        user.setAge(35);
 
-        String oldName = user.getFirstName();
+        long val = simpleJDBCRepository.createUser(user);
+
+        for (User foundUser : simpleJDBCRepository.findAllUser()) {
+            user = foundUser;
+            System.out.println("User id: " + foundUser.getId()
+                    + ", User age: " + foundUser.getAge()
+                    + ", User last name: " + foundUser.getLastName()
+                    + ", User first name: " + foundUser.getFirstName());
+
+        }
 
         user.setFirstName("Bill");
         user.setLastName("Gates");
-
+        user.setAge(45);
 
         simpleJDBCRepository.updateUser(user);
 
-        User user2 = simpleJDBCRepository.findUserByName("firstUserName");
 
-        user2.setFirstName(oldName);
+        for (User foundUser : simpleJDBCRepository.findAllUser()) {
+            user = foundUser;
+            System.out.println("User id: " + foundUser.getId()
+                    + ", User age: " + foundUser.getAge()
+                    + ", User last name: " + foundUser.getLastName()
+                    + ", User first name: " + foundUser.getFirstName());
 
-        simpleJDBCRepository.updateUser(user2);
+        }
 
-        User user3 = new User();
+        user = simpleJDBCRepository.findUserById(4L);
 
-        user3.setId(10L);
-        user3.setFirstName("Elon");
-        user3.setLastName("Musk");
-        user3.setAge(35);
-        simpleJDBCRepository.createUser(user3);
+        System.out.println("ID: " + user.getId() + " Name: " + user.getFirstName() );
+
+        simpleJDBCRepository.deleteUser(4L);
+
+
+
+
+//        simpleJDBCRepository.updateUser(user);
+//
+//        User user2 = simpleJDBCRepository.findUserByName("firstUserName");
+//
+//        user2.setFirstName(oldName);
+//
+//        simpleJDBCRepository.updateUser(user2);
+//
+//        User user3 = new User();
+//
+//        user3.setId(10L);
+//        user3.setFirstName("Elon");
+//        user3.setLastName("Musk");
+//        user3.setAge(35);
+//        simpleJDBCRepository.createUser(user3);
 
         for (User foundUser : simpleJDBCRepository.findAllUser()) {
 
