@@ -28,9 +28,6 @@ public class SimpleJDBCRepository {
 
 
     public Long createUser(User user){
-        if (user.getId() == null) {
-            return null;
-        }
         connection = CustomDataSource.getInstance().getConnection();
         try {
             ps = connection.prepareStatement(createUserSQL);
@@ -48,9 +45,6 @@ public class SimpleJDBCRepository {
     }
 
     public User findUserById(Long userId){
-        if (userId == null) {
-            return null;
-        }
         connection = CustomDataSource.getInstance().getConnection();
         try {
             ps = connection.prepareStatement(findUserByIdSQL);
@@ -72,9 +66,6 @@ public class SimpleJDBCRepository {
     }
 
     public User findUserByName(String userName) {
-        if (userName == null) {
-            return null;
-        }
         connection = CustomDataSource.getInstance().getConnection();
         try {
             ps = connection.prepareStatement(findUserByNameSQL);
@@ -117,9 +108,6 @@ public class SimpleJDBCRepository {
     }
 
     public User updateUser(User user) {
-        if (user.getId() == null) {
-            return null;
-        }
         connection = CustomDataSource.getInstance().getConnection();
         try {
             ps = connection.prepareStatement(updateUserSQL);
@@ -137,9 +125,6 @@ public class SimpleJDBCRepository {
     }
 
     public void deleteUser(Long userId) {
-        if (userId == null) {
-            return;
-        }
         connection = CustomDataSource.getInstance().getConnection();
         try {
             ps = connection.prepareStatement(deleteUser);
