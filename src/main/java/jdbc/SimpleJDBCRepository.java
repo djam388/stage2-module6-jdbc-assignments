@@ -31,10 +31,10 @@ public class SimpleJDBCRepository {
         connection = CustomDataSource.getInstance().getConnection();
         try {
             ps = connection.prepareStatement(createUserSQL);
-            ps.setLong(1, user.getId());
+            ps.setString(1, String.valueOf(user.getId()));
             ps.setString(2, user.getFirstName());
             ps.setString(3, user.getLastName());
-            ps.setInt(4, user.getAge());
+            ps.setString(4, String.valueOf(user.getAge()));
             long val = ps.executeUpdate();
             connection.close();
             return val;
@@ -48,7 +48,7 @@ public class SimpleJDBCRepository {
         connection = CustomDataSource.getInstance().getConnection();
         try {
             ps = connection.prepareStatement(findUserByIdSQL);
-            ps.setLong(1, userId);
+            ps.setString(1, String.valueOf(userId));
             ResultSet rs = ps.executeQuery();
             User user = new User();
             while (rs.next()) {
@@ -113,12 +113,12 @@ public class SimpleJDBCRepository {
             ps = connection.prepareStatement(updateUserSQL);
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
-            ps.setInt(3, user.getAge());
-            ps.setLong(4, user.getId());
+            ps.setString(3, String.valueOf(user.getAge()));
+            ps.setString(4, String.valueOf(user.getId()));
             ps.executeUpdate();
-            User changedUser = findUserById(user.getId());
+//            User changedUser = findUserById(user.getId());
             connection.close();
-            return changedUser;
+            return user;
         } catch (SQLException | NullPointerException e) {
             throw new RuntimeException(e);
         }
@@ -128,7 +128,7 @@ public class SimpleJDBCRepository {
         connection = CustomDataSource.getInstance().getConnection();
         try {
             ps = connection.prepareStatement(deleteUser);
-            ps.setLong(1, userId);
+            ps.setString(1, String.valueOf(userId));
             int row = ps.executeUpdate();
             connection.close();
         } catch (SQLException | NullPointerException e) {
