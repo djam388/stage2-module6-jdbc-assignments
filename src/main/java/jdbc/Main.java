@@ -67,12 +67,13 @@ public class Main {
         System.out.println("Users count in DB: " + users.size());
 
         User user = new User();
-        user.setId(10L);
         user.setFirstName("Elon");
         user.setLastName("Musk");
         user.setAge(35);
 
         long val = simpleJDBCRepository.createUser(user);
+
+        System.out.println("User Creation return value: " + val);
 
         for (User foundUser : simpleJDBCRepository.findAllUser()) {
             user = foundUser;
@@ -99,11 +100,11 @@ public class Main {
 
         }
 
-        user = simpleJDBCRepository.findUserById(4L);
+        user = simpleJDBCRepository.findUserById(8L);
 
         System.out.println("ID: " + user.getId() + " Name: " + user.getFirstName() );
 
-        simpleJDBCRepository.deleteUser(5L);
+        simpleJDBCRepository.deleteUser(8L);
 
 
 

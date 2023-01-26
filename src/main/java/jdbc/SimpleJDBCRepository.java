@@ -19,7 +19,8 @@ public class SimpleJDBCRepository {
     private PreparedStatement ps = null;
     private Statement st = null;
 
-    private static final String createUserSQL = "INSERT INTO myusers (id, firstname, lastname, age) VALUES (?, ?, ?, ?)";
+//    private static final String createUserSQL = "INSERT INTO myusers (id, firstname, lastname, age) VALUES (?, ?, ?, ?)";
+private static final String createUserSQL = "INSERT INTO myusers (firstname, lastname, age) VALUES (?, ?, ?)";
     private static final String updateUserSQL = "UPDATE myusers SET firstname = ?, lastname = ?, age = ? WHERE id = ?";
     private static final String deleteUser = "DELETE FROM myusers WHERE id = ?";
     private static final String findUserByIdSQL = "SELECT * FROM myusers WHERE id = ?";
@@ -30,14 +31,23 @@ public class SimpleJDBCRepository {
     public Long createUser(User user){
         connection = CustomDataSource.getInstance().getConnection();
         try {
-            ps = connection.prepareStatement(createUserSQL);
-            ps.setLong(1, user.getId());
-            ps.setString(2, user.getFirstName());
-            ps.setString(3, user.getLastName());
-            ps.setInt(4, user.getAge());
-            long val = ps.executeUpdate();
-            connection.close();
-            return val;
+            ps = connection.prepareStatement(createUserSQL, Statement.RETURN_GENERATED_KEYS);
+//            ps.setLong(1, user.getId());
+            ps.setString(1, user.getFirstName());
+            ps.setString(2, user.getLastName());
+            ps.setInt(3, user.getAge());
+            ps.executeUpdate();
+            ResultSet resultSet = ps.getGeneratedKeys();
+//            connection.close();
+            if (resultSet.next()) {
+                long generatedId = resultSet.getLong(1);
+                return generatedId;
+            }
+            else {
+                return 0L;
+            }
+
+
         } catch (SQLException | NullPointerException e) {
             throw new RuntimeException(e);
         }
